@@ -53,7 +53,7 @@ public class HttpActor extends AbstractActor {
 
         HttpRequest request = HttpRequest.POST(URL).withEntity(ContentTypes.APPLICATION_JSON, json.toString());
         return http.singleRequest(request).exceptionally(throwable -> {
-            //TODO Cделать корректную обработку ошибки
+            //TODO Cделать корректную обработку исключений
             System.out.println("Cannot connect to server");
             return HttpResponse.create();
         });
