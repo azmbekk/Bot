@@ -14,6 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import scala.concurrent.ExecutionContextExecutor;
 
+
 import java.util.concurrent.CompletionStage;
 
 import static akka.pattern.Patterns.pipe;
@@ -51,7 +52,13 @@ public class HttpActor extends AbstractActor {
         logger.debug(json.toString());
 
         HttpRequest request = HttpRequest.POST(URL).withEntity(ContentTypes.APPLICATION_JSON, json.toString());
-        return http.singleRequest(request);
+        CompletionStage<HttpResponse> result = http.singleRequest(request);
+        result.exceptionally(throwable -> {
+            System.out.println("Cannot connect to server");
+            throwable.printStackTrace();
+            return HttpResponse.create();
+        });
+        return result;
     }
 
 
